@@ -1,0 +1,12 @@
+{
+  "app_name": "Sentinel",
+  "version": "1.0.0",
+  "scan_interval_hours": 24,
+  "quarantine_path": "./database/quarantine",
+  "db_path": "./database/signatures.db",
+  "update_check_url": "https://raw.githubusercontent.com/user/repo/main/update.json",
+  "excluded_interfaces": ["Wi-Fi", "Bluetooth"],
+  "auto_update_db": true,
+  "log_level": "INFO",
+  "vt_api_key": "946caf4ee5a485c1dd583616f5f16088d1b58bcce1a3e589d4d260dca1e53921"
+}
