@@ -98,8 +98,11 @@ class MainWindow(QMainWindow):
         tab = QWidget()
         layout = QVBoxLayout(tab)
         
-        self.net_table = QTableWidget(0, 4)
-        self.net_table.setHorizontalHeaderLabels(["IP Source", "Port", "Protocole", "Statut"])
+        self.net_table = QTableWidget(0, 7)
+        self.net_table.setHorizontalHeaderLabels([
+            "Heure", "IP source", "Port local", "IP destination",
+            "Port distant", "Protocole", "Processus (PID)"
+            ])
         header = self.net_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         layout.addWidget(self.net_table)
@@ -154,44 +157,29 @@ class MainWindow(QMainWindow):
                 f"(PID {proc['pid']}) - {proc['reason']}"
             )
 
+    SERVICES = {80: "HTTP", 443: "HTTPS", 22: "SSH", 53: "DNS", 3389: "RDP"}
+    MAX_ROWS = 2000
+
     def update_network_tab(self, unauthorized):
-        """Affiche les connexions non autorisées dans l'onglets Réseau"""
         if not unauthorized:
             return
-
-        timestamp = datetime.now().strftime("%H:%M:%S")
-
-        self.net_table.setRowCount(0)
-
+        ts = datetime.now().strftime("%H:%M:%S")
         for conn in unauthorized:
+            port = conn["dst_port"]
+            service = self.SERVICES.get(port)
+            info = f"{conn['process']} ({conn['pid']})" if conn["pid"] else "System"
+            values = [ts, conn["src_ip"], str(conn["src_port"]), conn["dst_ip"],
+                    f"{port} ({service})" if service else str(port),
+                    conn["proto"], info]
             row = self.net_table.rowCount()
             self.net_table.insertRow(row)
+            for col, v in enumerate(values):
+                self.net_table.setItem(row, col, QTableWidgetItem(v))
+            if self.net_table.rowCount() > self.MAX_ROWS:
+                self.net_table.removeRow(0)
+        self.net_table.scrollToBottom()
 
-            # Colonne 1 : Horodatage
-            self.net_table.setItem(row, 0, QTableWidgetItem(timestamp))
-            
-            # Colonne 1 : IP Source (Remote IP car c'est vers qui on va)
-            self.net_table.setItem(row, 1, QTableWidgetItem(conn["remote_ip"])) 
-            
-            # Colonne 2 : Port Distant (ex: 443 pour HTTPS)
-            port_val = conn.get("remote_port", "?")
-            self.net_table.setItem(row, 2, QTableWidgetItem(str(port_val)))
-
-            # Colonne 3 : Port local
-            self.net_table.setItem(row, 3, QTableWidgetItem(str(conn["src_port"])))
-            
-            # Colonne 4 : Protocole
-            self.net_table.setItem(row, 4, QTableWidgetItem(conn["proto"]))
-
-            # Colonne 4 : Statut (On peut ajouter le nom du service si on veut)
-            
-
-            status = "Inconnu"
-            if port_val == 80: status = "HTTP"
-            elif port_val == 443: status = "HTTPS"
-            self.net_table.setItem(row, 3, QTableWidgetItem(status))
-            
-        logger.info(f"[UI] {len(unauthorized)} connexions affichées dans l'onglet réseau")
+        logger.info(f"[UI] {len(unauthorized)} nouvelles entrées réseau ajoutées")
 
     def show_threat_alert(self, threats):
         QMessageBox.warning(
@@ -212,3 +200,7 @@ class MainWindow(QMainWindow):
     def _get_timestamp(self):
         from datetime import datetime
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    def closeEvent(self, event):
+        self.hide()
+        event.ignore()

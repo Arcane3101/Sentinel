@@ -143,10 +143,10 @@ class PyAVApp(QApplication):
                 self.window.update_monitor_tab(anomalies)
                 for a in anomalies:
                     logger.warning(f"[Monitor] {a['name']} (PID {a['pid']}) - {a['reason']}")
-                else:
-                    logger.debug("[Monitor] Aucun processus anormal")
+            else:
+                logger.debug("[Monitor] Aucun processus anormal")
         except Exception as e:
-            logger.error(f"Erreur monitoring: {e}")
+            logger.exception(f"Erreur monitoring: {e}")
         # Prochain appel dans 10s
         QTimer.singleShot(10000, self._monitor_loop)
 
@@ -156,7 +156,7 @@ class PyAVApp(QApplication):
             if unauthorized:
                 self.window.update_network_tab(unauthorized)
         except Exception as e:
-            logger.error(f"Erreur réseau: {e}")
+            logger.exception(f"Erreur réseau: {e}")
 
         # Prochazin appel dans 5s
         QTimer.singleShot(5000, self._network_loop)
@@ -185,11 +185,6 @@ class PyAVApp(QApplication):
         # Prochain scan dans 24h (ou config)
         scan_interval_ms = int(self.config.get("scan_interval_hours", 24) * 60 * 60 * 1000)
         QTimer.singleShot(scan_interval_ms, self._periodic_scan)
-
-    def closeEvent(self, event):
-        """Quand on ferme la fenêtre, on minimise dans la tray plutôt que de quitter"""
-        self.window.hide()
-        event.ignore()
 
 if __name__ == "__main__":
     app = PyAVApp(sys.argv)

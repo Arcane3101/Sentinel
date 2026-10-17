@@ -1,8 +1,9 @@
 import psutil
 import sqlite3
 import subprocess
-from datetime import datetime
 import logging
+import socket
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -11,45 +12,50 @@ class NetworkMonitor:
         self.db_path = db_path
         self.excluded = [i.lower() for i in excluded_interfaces]
         self._whitelist_ips = set()
+        self._seen = set()
 
     def get_connections(self) -> list:
-        """Récupère les connexions TCP/UDP actives"""
+        """Connexions TCP/UDP actives avec structure fixe"""
         conns = []
-        try: 
-            for conn in psutil.net_connections(kind='inet'):
-                if conn.status != psutil.CONN_ESTABLISHED:
+        try:
+            for c in psutil.net_connections(kind='inet'):
+                if not c.raddr:
+                    continue  # sockets en écoute / UDP non connectés
+                if c.type == socket.SOCK_STREAM and c.status != psutil.CONN_ESTABLISHED:
                     continue
 
-                local_ip = conn.laddr.ip if conn.laddr else "?"
-                local_port = conn.laddr.port if conn.laddr else 0
-                remote_ip = conn.laddr.ip
-                remote_port = conn.raddr.port if conn.raddr else 0
+                process_name = "System"
+                if c.pid:
+                    try:
+                        process_name = psutil.Process(c.pid).name()
+                    except (psutil.NoSuchProcess, psutil.AccessDenied):
+                        process_name = "N/A"
 
-                # On stocke les deux ports pour être complet
                 conns.append({
-                    "local_ip": local_ip,
-                    "local_port": local_port,
-                    "remote_ip": remote_ip,
-                    "remote_port": remote_port,
-                    "proto": "TCP" if conn.type == 1 else "UDP",  # sock.SOCK_STREAM = TCP, sock.SOCK_DGRAM = UDP
-                    "pid": conn.pid
+                    "src_ip": c.laddr.ip if c.laddr else "0.0.0.0",
+                    "src_port": c.laddr.port if c.laddr else 0,
+                    "dst_ip": c.raddr.ip,
+                    "dst_port": c.raddr.port,
+                    "proto": "TCP" if c.type == socket.SOCK_STREAM else "UDP",
+                    "pid": c.pid,
+                    "process": process_name,
                 })
-        except Exception as e:
-            logger.debug(f"[Network] Erreur lecture connexions: {e}")
+        except Exception:
+            logger.exception("[Network] Erreur lecture connexions")
         return conns
 
     def get_unauthorized_connections(self) -> list:
-        """Retourne les connexions (sans filtre pour l'instant)"""
-        unauthorized = []
+        current = {}
         for conn in self.get_connections():
-            remote_ip = conn["remote_ip"]
-
-            # Ignore si whitelist
-            if remote_ip == "?" or remote_ip == "0.0.0.0":
+            ip = conn["dst_ip"]
+            if ip in ("0.0.0.0", "", "?") or ip in self._whitelist_ips:
                 continue
-
-            unauthorized.append(conn)
-        return unauthorized
+            key = (conn["src_ip"], conn["src_port"], ip,
+                   conn["dst_port"], conn["proto"], conn["pid"])
+            current[key] = conn
+        new = [c for k, c in current.items() if k not in self._seen]
+        self._seen = set(current)  # purge les connexions fermées
+        return new
 
     def whitelist_ip(self, ip: str):
         self._whitelist_ips.add(ip)

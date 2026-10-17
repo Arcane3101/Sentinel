@@ -55499,3 +55499,46 @@
 2026-09-02 20:45:54,229 - PyAV - ERROR - Erreur réseau: 'src_port'
 2026-09-02 20:45:59,232 - PyAV - ERROR - Erreur réseau: 'src_port'
 2026-09-02 20:46:04,254 - PyAV - ERROR - Erreur réseau: 'src_port'
+2026-10-16 21:47:45,480 - PyAV - INFO - Initialisation des modules...
+2026-10-16 21:47:45,485 - modules.scanner - INFO - [Scanner] 1 signatures locales chargées
+2026-10-16 21:47:45,666 - PyAV - INFO - Sentinel démarré avec succès.
+2026-10-16 21:47:46,667 - PyAV - INFO - Démarrage des tâches de fond (Monitoring & Réseau)...
+2026-10-16 21:47:46,723 - ui.main_window - INFO - [UI] 62 nouvelles entrées réseau ajoutées
+2026-10-16 21:48:21,805 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:48:31,827 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:48:41,857 - ui.main_window - INFO - [UI] 4 nouvelles entrées réseau ajoutées
+2026-10-16 21:48:56,874 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:50:06,904 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:50:11,911 - ui.main_window - INFO - [UI] 4 nouvelles entrées réseau ajoutées
+2026-10-16 21:50:21,933 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:50:31,954 - ui.main_window - INFO - [UI] 5 nouvelles entrées réseau ajoutées
+2026-10-16 21:50:36,976 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:51:32,042 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:51:42,055 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:51:47,053 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:52:07,071 - ui.main_window - INFO - [UI] 3 nouvelles entrées réseau ajoutées
+2026-10-16 21:52:12,078 - ui.main_window - INFO - [UI] 5 nouvelles entrées réseau ajoutées
+2026-10-16 21:52:22,115 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:52:32,134 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:53:27,158 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:54:23,604 - PyAV - INFO - Initialisation des modules...
+2026-10-16 21:54:23,611 - modules.scanner - INFO - [Scanner] 1 signatures locales chargées
+2026-10-16 21:54:23,781 - PyAV - INFO - Sentinel démarré avec succès.
+2026-10-16 21:54:24,781 - PyAV - INFO - Démarrage des tâches de fond (Monitoring & Réseau)...
+2026-10-16 21:54:24,836 - ui.main_window - INFO - [UI] 60 nouvelles entrées réseau ajoutées
+2026-10-16 21:54:34,860 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:55:24,937 - ui.main_window - INFO - [UI] 3 nouvelles entrées réseau ajoutées
+2026-10-16 21:55:29,959 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:55:34,964 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:10,023 - ui.main_window - INFO - [UI] 4 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:15,034 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:20,046 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:25,065 - ui.main_window - INFO - [UI] 2 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:35,091 - ui.main_window - INFO - [UI] 3 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:40,091 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:56:50,118 - ui.main_window - INFO - [UI] 1 nouvelles entrées réseau ajoutées
+2026-10-16 21:57:50,089 - PyAV - INFO - Initialisation des modules...
+2026-10-16 21:57:50,095 - modules.scanner - INFO - [Scanner] 1 signatures locales chargées
+2026-10-16 21:57:50,262 - PyAV - INFO - Sentinel démarré avec succès.
+2026-10-16 21:57:51,262 - PyAV - INFO - Démarrage des tâches de fond (Monitoring & Réseau)...
+2026-10-16 21:57:51,319 - ui.main_window - INFO - [UI] 58 nouvelles entrées réseau ajoutées
